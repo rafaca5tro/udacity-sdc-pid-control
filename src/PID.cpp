@@ -1,69 +1,62 @@
 #include "PID.h"
 #include <algorithm>
+#include <limits>
 
-/**
- * TODO: Complete the PID class. You may add any additional desired functions.
- */
-
-PID::PID() {}
-
-PID::~PID() {}
-
-void PID::Init(double Kp_, double Ki_, double Kd_) {
-  /**
-   * TODO: Initialize PID coefficients (and errors, if needed)
-   */
-  PID::Kp = Kp_;
-  PID::Ki = Ki_;
-  PID::Kd = Kd_;
+PID::PID(double Kp_, double Ki_, double Kd_) {
+  Kp = Kp_;
+  Ki = Ki_;
+  Kd = Kd_;
 
   p_error = 0.0;
   i_error = 0.0;
   d_error = 0.0;
 
-  prev_cte = 0.0; // Previous CTE
+  prev_cte = 0.0;
 
   counter = 0; 
   errorSum = 0.0;
-  minError = std::numeric_limits<double>::max();
-  maxError = std::numeric_limits<double>::min();
 
+  // Use std::numeric_limits for min/max initialization
+  minError = std::numeric_limits<double>::max();
+  maxError = std::numeric_limits<double>::lowest();
 }
 
+PID::~PID() {}
+
 void PID::UpdateError(double cte) {
-  /**
-   * TODO: Update PID errors based on cte.
-   */
+  // Proportional Error (P)
+  p_error = cte;
 
-  p_error = cte; // Proportional Error (P)
+  // Integral Error (I)
+  i_error += cte;
 
-  i_error += cte; // Integral Error (I)
-
-  d_error = cte - prev_cte; // Diferential Error (D)
+  // Differential Error (D)
+  // Initially prev_cte is 0, so d_error is just cte.
+  // This is acceptable for the first step.
+  d_error = cte - prev_cte;
 
   prev_cte = cte;
 
   errorSum += cte;
   counter++;
 
-  if ( cte > maxError ) {
+  if (cte > maxError) {
     maxError = cte;
   }
-  if ( cte < minError ) {
+  if (cte < minError) {
     minError = cte;
   }
 }
 
 double PID::TotalError() {
-  /**
-   * TODO: Calculate and return the total error
-   */
+  // Total Error = Kp * p_error + Ki * i_error + Kd * d_error
+  // Note: Usually the control output is -TotalError
   return p_error * Kp + i_error * Ki + d_error * Kd;
 }
 
-// Calculate Average/Min/Max Error
 double PID::AverageError() {
-  return errorSum/counter;
+  if (counter == 0) return 0.0;
+  return errorSum / counter;
 }
 
 double PID::MinError() {

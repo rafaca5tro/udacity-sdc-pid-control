@@ -1,6 +1,6 @@
-project(PID)
-
 cmake_minimum_required (VERSION 3.5)
+
+project(PID)
 
 add_definitions(-std=c++11)
 
@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 
 set(sources src/PID.cpp src/main.cpp)
 
+include_directories(include)
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
@@ -24,3 +25,5 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 add_executable(pid ${sources})
 
 target_link_libraries(pid z ssl uv uWS)
+
+add_executable(test_pid src/test_pid.cpp src/PID.cpp)
