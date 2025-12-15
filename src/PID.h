@@ -4,43 +4,17 @@
 class PID {
  public:
   /**
-  * PID Errors
-  **/
-  double p_error;
-  double i_error;
-  double d_error;
-  double prev_cte;
-
-  /**
-   * Error counters
-  **/
-  long counter;
-  double errorSum;
-  double minError;
-  double maxError;
-
-  /**
-  * PID Coefficients
-  **/
-  double Kp;
-  double Ki;
-  double Kd;
-
-  /**
    * Constructor
+   * @param Kp_ The initial proportional coefficient
+   * @param Ki_ The initial integral coefficient
+   * @param Kd_ The initial differential coefficient
    */
-  PID();
+  PID(double Kp_, double Ki_, double Kd_);
 
   /**
    * Destructor.
    */
   virtual ~PID();
-
-  /**
-   * Initialize PID.
-   * @param (Kp_, Ki_, Kd_) The initial PID coefficients
-   */
-  void Init(double Kp_, double Ki_, double Kd_);
 
   /**
    * Update the PID error variables given cross track error.
@@ -50,24 +24,51 @@ class PID {
 
   /**
    * Calculate the total PID error.
-   * @output The total PID error
+   * @return The total PID error
    */
   double TotalError();
 
   /**
-  *  Returns the average error.
-  **/
+   * Returns the average error.
+   * @return The average error
+   */
   double AverageError();
 
   /**
-  * Returns the min error.
-  **/
+   * Returns the min error.
+   * @return The minimum error encountered
+   */
   double MinError();
 
   /**
-  * Returns the max error.
-  **/
+   * Returns the max error.
+   * @return The maximum error encountered
+   */
   double MaxError();
+
+ private:
+  /**
+   * PID Errors
+   */
+  double p_error;
+  double i_error;
+  double d_error;
+  double prev_cte;
+
+  /**
+   * Error counters
+   */
+  long counter;
+  double errorSum;
+  double minError;
+  double maxError;
+
+  /**
+   * PID Coefficients
+   */
+  double Kp;
+  double Ki;
+  double Kd;
 };
 
 #endif  // PID_H
