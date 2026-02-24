@@ -1,18 +1,11 @@
 #include "PID.h"
 #include <algorithm>
 
-/**
- * TODO: Complete the PID class. You may add any additional desired functions.
- */
-
 PID::PID() {}
 
 PID::~PID() {}
 
 void PID::Init(double Kp_, double Ki_, double Kd_) {
-  /**
-   * TODO: Initialize PID coefficients (and errors, if needed)
-   */
   PID::Kp = Kp_;
   PID::Ki = Ki_;
   PID::Kd = Kd_;
@@ -31,10 +24,6 @@ void PID::Init(double Kp_, double Ki_, double Kd_) {
 }
 
 void PID::UpdateError(double cte) {
-  /**
-   * TODO: Update PID errors based on cte.
-   */
-
   p_error = cte; // Proportional Error (P)
 
   i_error += cte; // Integral Error (I)
@@ -55,9 +44,6 @@ void PID::UpdateError(double cte) {
 }
 
 double PID::TotalError() {
-  /**
-   * TODO: Calculate and return the total error
-   */
   return p_error * Kp + i_error * Ki + d_error * Kd;
 }
 
